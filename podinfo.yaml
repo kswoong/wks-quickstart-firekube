@@ -4,13 +4,20 @@ items:
   kind: Service
   metadata:
     annotations:
+      fluxcd.io/sync-checksum: 1179a121367fac0009852335a564c7f0e1466cbf
       kubectl.kubernetes.io/last-applied-configuration: |
-        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"podinfo"},"name":"podinfo","namespace":"default"},"spec":{"ports":[{"name":"http","port":9898,"protocol":"TCP","targetPort":"http"},{"name":"grpc","port":9999,"protocol":"TCP","targetPort":"grpc"}],"selector":{"app":"podinfo"},"type":"ClusterIP"}}
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{"fluxcd.io/sync-checksum":"1179a121367fac0009852335a564c7f0e1466cbf"},"labels":{"app":"podinfo","fluxcd.io/sync-gc-mark":"sha256.r7_H9NK3nC1SV-hpIp4NCgx2EerdLYpeHsNT_0nqsvs"},"name":"podinfo","namespace":"default"},"spec":{"ports":[{"name":"http","port":9898,"protocol":"TCP","targetPort":"http"},{"name":"grpc","port":9999,"protocol":"TCP","targetPort":"grpc"}],"selector":{"app":"podinfo"},"type":"ClusterIP"}}
+    creationTimestamp: "2020-01-01T14:15:37Z"
     labels:
       app: podinfo
+      fluxcd.io/sync-gc-mark: sha256.r7_H9NK3nC1SV-hpIp4NCgx2EerdLYpeHsNT_0nqsvs
     name: podinfo
     namespace: default
+    resourceVersion: "656"
+    selfLink: /api/v1/namespaces/default/services/podinfo
+    uid: 2ebc7818-2ca1-11ea-adeb-02421e85b274
   spec:
+    clusterIP: 10.104.61.254
     ports:
     - name: http
       port: 9898
@@ -22,26 +29,39 @@ items:
       targetPort: grpc
     selector:
       app: podinfo
+    sessionAffinity: None
     type: ClusterIP
+  status:
+    loadBalancer: {}
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
     annotations:
+      deployment.kubernetes.io/revision: "1"
+      fluxcd.io/sync-checksum: 594d8f01a70f194f99a9445752521b12e01a9428
       kubectl.kubernetes.io/last-applied-configuration: |
-        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"podinfo"},"name":"podinfo","namespace":"default"},"spec":{"minReadySeconds":3,"progressDeadlineSeconds":60,"revisionHistoryLimit":5,"selector":{"matchLabels":{"app":"podinfo"}},"strategy":{"rollingUpdate":{"maxUnavailable":0},"type":"RollingUpdate"},"template":{"metadata":{"annotations":{"prometheus.io/port":"9797","prometheus.io/scrape":"true"},"labels":{"app":"podinfo"}},"spec":{"containers":[{"command":["./podinfo","--port=9898","--port-metrics=9797","--grpc-port=9999","--grpc-service-name=podinfo","--level=info","--random-delay=false","--random-error=false"],"env":[{"name":"PODINFO_UI_COLOR","value":"#34577c"}],"image":"stefanprodan/podinfo:3.1.5","imagePullPolicy":"IfNotPresent","livenessProbe":{"exec":{"command":["podcli","check","http","localhost:9898/healthz"]},"initialDelaySeconds":5,"timeoutSeconds":5},"name":"podinfod","ports":[{"containerPort":9898,"name":"http","protocol":"TCP"},{"containerPort":9797,"name":"http-metrics","protocol":"TCP"},{"containerPort":9999,"name":"grpc","protocol":"TCP"}],"readinessProbe":{"exec":{"command":["podcli","check","http","localhost:9898/readyz"]},"initialDelaySeconds":5,"timeoutSeconds":5},"resources":{"limits":{"cpu":"2000m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"64Mi"}}}]}}}}
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"fluxcd.io/sync-checksum":"594d8f01a70f194f99a9445752521b12e01a9428"},"labels":{"app":"podinfo","fluxcd.io/sync-gc-mark":"sha256.81krWqxQtxSMACzBvDxajwsFjOh305-V0whYBYnA4Nw"},"name":"podinfo","namespace":"default"},"spec":{"minReadySeconds":3,"progressDeadlineSeconds":60,"revisionHistoryLimit":5,"selector":{"matchLabels":{"app":"podinfo"}},"strategy":{"rollingUpdate":{"maxUnavailable":0},"type":"RollingUpdate"},"template":{"metadata":{"annotations":{"prometheus.io/port":"9797","prometheus.io/scrape":"true"},"labels":{"app":"podinfo"}},"spec":{"containers":[{"command":["./podinfo","--port=9898","--port-metrics=9797","--grpc-port=9999","--grpc-service-name=podinfo","--level=info","--random-delay=false","--random-error=false"],"env":[{"name":"PODINFO_UI_COLOR","value":"#34577c"}],"image":"stefanprodan/podinfo:3.1.5","imagePullPolicy":"IfNotPresent","livenessProbe":{"exec":{"command":["podcli","check","http","localhost:9898/healthz"]},"initialDelaySeconds":5,"timeoutSeconds":5},"name":"podinfod","ports":[{"containerPort":9898,"name":"http","protocol":"TCP"},{"containerPort":9797,"name":"http-metrics","protocol":"TCP"},{"containerPort":9999,"name":"grpc","protocol":"TCP"}],"readinessProbe":{"exec":{"command":["podcli","check","http","localhost:9898/readyz"]},"initialDelaySeconds":5,"timeoutSeconds":5},"resources":{"limits":{"cpu":"2000m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"64Mi"}}}]}}}}
+    creationTimestamp: "2020-01-01T14:15:37Z"
+    generation: 2
     labels:
       app: podinfo
+      fluxcd.io/sync-gc-mark: sha256.81krWqxQtxSMACzBvDxajwsFjOh305-V0whYBYnA4Nw
     name: podinfo
     namespace: default
+    resourceVersion: "836"
+    selfLink: /apis/apps/v1/namespaces/default/deployments/podinfo
+    uid: 2ec7615c-2ca1-11ea-adeb-02421e85b274
   spec:
     minReadySeconds: 3
     progressDeadlineSeconds: 60
+    replicas: 2
     revisionHistoryLimit: 5
     selector:
       matchLabels:
         app: podinfo
     strategy:
       rollingUpdate:
+        maxSurge: 25%
         maxUnavailable: 0
       type: RollingUpdate
     template:
@@ -49,6 +69,7 @@ items:
         annotations:
           prometheus.io/port: "9797"
           prometheus.io/scrape: "true"
+        creationTimestamp: null
         labels:
           app: podinfo
       spec:
@@ -74,7 +95,10 @@ items:
               - check
               - http
               - localhost:9898/healthz
+            failureThreshold: 3
             initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
             timeoutSeconds: 5
           name: podinfod
           ports:
@@ -94,23 +118,58 @@ items:
               - check
               - http
               - localhost:9898/readyz
+            failureThreshold: 3
             initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
             timeoutSeconds: 5
           resources:
             limits:
-              cpu: 2000m
+              cpu: "2"
               memory: 512Mi
             requests:
               cpu: 100m
               memory: 64Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    conditions:
+    - lastTransitionTime: "2020-01-01T14:15:37Z"
+      lastUpdateTime: "2020-01-01T14:15:37Z"
+      message: Deployment does not have minimum availability.
+      reason: MinimumReplicasUnavailable
+      status: "False"
+      type: Available
+    - lastTransitionTime: "2020-01-01T14:16:53Z"
+      lastUpdateTime: "2020-01-01T14:16:53Z"
+      message: ReplicaSet "podinfo-7fbb954f66" has timed out progressing.
+      reason: ProgressDeadlineExceeded
+      status: "False"
+      type: Progressing
+    observedGeneration: 2
+    replicas: 2
+    unavailableReplicas: 2
+    updatedReplicas: 2
 - apiVersion: autoscaling/v2beta1
   kind: HorizontalPodAutoscaler
   metadata:
     annotations:
+      fluxcd.io/sync-checksum: 0928901fe11858ba53e0c36104e1329c6dd50481
       kubectl.kubernetes.io/last-applied-configuration: |
-        {"apiVersion":"autoscaling/v2beta1","kind":"HorizontalPodAutoscaler","metadata":{"annotations":{},"name":"podinfo","namespace":"default"},"spec":{"maxReplicas":4,"metrics":[{"resource":{"name":"cpu","targetAverageUtilization":99},"type":"Resource"}],"minReplicas":2,"scaleTargetRef":{"apiVersion":"apps/v1","kind":"Deployment","name":"podinfo"}}}
+        {"apiVersion":"autoscaling/v2beta1","kind":"HorizontalPodAutoscaler","metadata":{"annotations":{"fluxcd.io/sync-checksum":"0928901fe11858ba53e0c36104e1329c6dd50481"},"labels":{"fluxcd.io/sync-gc-mark":"sha256.C9ZjyZR8xv4HMJq-3N2j3JSqsrXDMJXPVJwMAM6VnyE"},"name":"podinfo","namespace":"default"},"spec":{"maxReplicas":4,"metrics":[{"resource":{"name":"cpu","targetAverageUtilization":99},"type":"Resource"}],"minReplicas":2,"scaleTargetRef":{"apiVersion":"apps/v1","kind":"Deployment","name":"podinfo"}}}
+    creationTimestamp: "2020-01-01T14:15:37Z"
+    labels:
+      fluxcd.io/sync-gc-mark: sha256.C9ZjyZR8xv4HMJq-3N2j3JSqsrXDMJXPVJwMAM6VnyE
     name: podinfo
     namespace: default
+    resourceVersion: "771"
+    selfLink: /apis/autoscaling/v2beta1/namespaces/default/horizontalpodautoscalers/podinfo
+    uid: 2ed4fd56-2ca1-11ea-adeb-02421e85b274
   spec:
     maxReplicas: 4
     metrics:
@@ -123,5 +182,23 @@ items:
       apiVersion: apps/v1
       kind: Deployment
       name: podinfo
+  status:
+    conditions:
+    - lastTransitionTime: "2020-01-01T14:15:52Z"
+      message: the HPA controller was able to get the target's current scale
+      reason: SucceededGetScale
+      status: "True"
+      type: AbleToScale
+    - lastTransitionTime: "2020-01-01T14:16:08Z"
+      message: 'the HPA was unable to compute the replica count: unable to get metrics
+        for resource cpu: unable to fetch metrics from resource metrics API: the server
+        could not find the requested resource (get pods.metrics.k8s.io)'
+      reason: FailedGetResourceMetric
+      status: "False"
+      type: ScalingActive
+    currentMetrics: null
+    currentReplicas: 2
+    desiredReplicas: 2
+    lastScaleTime: "2020-01-01T14:15:52Z"
 kind: List
 metadata: {}
